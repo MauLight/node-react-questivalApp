@@ -20,6 +20,14 @@ usersRouter.get('/:id', async (request, response) => {
 
 usersRouter.post('/', async (request, response, next) => {
   const { firstname, lastname, email, birthdate, password } = request.body
+
+  const savedUser = User.find({ email })
+  if(savedUser.length > 0) {
+    return response.status(401).json({
+      error: 'username is already taken.'
+    })
+  }
+
   console.log('this is the request', request.body)
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
