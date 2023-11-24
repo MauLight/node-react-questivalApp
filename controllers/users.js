@@ -4,12 +4,12 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 
 usersRouter.get('/', async (_, response) => {
-  const users = await User.find({}).populate('projects')
+  const users = await User.find({})
   response.json(users)
 })
 
 usersRouter.get('/:id', async (request, response) => {
-  const user = await User.findById(request.params.id).populate('projects')
+  const user = await User.findById(request.params.id)
   if (user) {
     response.json(user)
   }
@@ -21,10 +21,11 @@ usersRouter.get('/:id', async (request, response) => {
 usersRouter.post('/', async (request, response, next) => {
   const { firstname, lastname, email, birthdate, password } = request.body
 
-  const savedUser = User.find({ email })
+  const savedUser = await User.find({ email })
   if(savedUser.length > 0) {
+    console.log('Email is already taken.')
     return response.status(401).json({
-      error: 'username is already taken.'
+      error: 'Email is already taken.'
     })
   }
 
