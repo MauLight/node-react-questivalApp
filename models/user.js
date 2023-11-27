@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (v) {
-        return /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v)
+        return /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,5}$/.test(v)
       }
     }
   },
