@@ -112,7 +112,7 @@ usersRouter.post('/passwordReset', async (request, response) => {
 })
 
 //! Reset Password step 2
-usersRouter.post('/newPassword', async (request, response, next) => {
+usersRouter.post('/newPassword', async (request, response) => {
 
   const { userId, token, newPassword } = request.body
   let passwordResetToken = await Token.findOne({ userId })
