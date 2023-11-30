@@ -9,6 +9,7 @@ const TEMPLATE_ID = process.env.TEMPLATE_ID
 const PUBLIC_KEY = process.env.PUBLIC_KEY
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 const SERVICE_ID = process.env.SERVICE_ID
+const JWT_SECRET = process.env.JWT_SECRET
 
 module.exports = {
   PORT,
@@ -19,5 +20,6 @@ module.exports = {
   TEMPLATE_ID,
   PUBLIC_KEY,
   PRIVATE_KEY,
-  SERVICE_ID
+  SERVICE_ID,
+  JWT_SECRET
 }
