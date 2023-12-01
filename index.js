@@ -104,10 +104,11 @@ type Mutation {
 
 const resolvers = {
   Query: {
-    allUsers: () => User.find({}),
-    findUser: (_, args) => User.findOne({ email: args.email }),
-    currentUser: (_, __, context) => {
-      return context.currentUser
+    // eslint-disable-next-line no-unused-vars
+    allUsers: async (_, __) => User.find({}),
+    findUser: async (_, args) => User.findOne({ email: args.email }),
+    currentUser: async (_, __, { currentUser }) => {
+      return currentUser
     }
   },
   Mutation: {
