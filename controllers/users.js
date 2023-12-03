@@ -7,8 +7,8 @@ const Token = require('../models/token')
 // eslint-disable-next-line no-unused-vars
 const { _, __, ___, _____, ______, TEMPLATE_ID, PUBLIC_KEY, PRIVATE_KEY, SERVICE_ID } = require('../utils/config')
 
-// const clientURL = 'http://localhost:5173/test'
-const clientURL = 'https://screenwriters.quest/test'
+const clientURL = 'http://localhost:5173/test'
+// const clientURL = 'https://screenwriters.quest/test'
 
 usersRouter.get('/', async (_, response) => {
   const users = await User.find({})
@@ -59,9 +59,9 @@ usersRouter.post('/', async (request, response, next) => {
 })
 
 usersRouter.put('/:id', (request, response, next) => {
-  const { email, password } = request.body
+  const { firstname, lastname, birthdate, email } = request.body
 
-  User.findByIdAndUpdate(request.params.id, { email, password }, { new: true, runValidators: true, context: 'query' })
+  User.findByIdAndUpdate(request.params.id, { firstname, lastname, birthdate, email }, { new: true, runValidators: true, context: 'query' })
     .then(updatedUser => { response.json(updatedUser) })
     .catch(error => next(error))
 })

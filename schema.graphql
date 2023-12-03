@@ -1,0 +1,72 @@
+type User {
+    firstname: String!
+    lastname: String!
+    birthdate: String!
+    email: String!
+    passwordHash: String!
+    projects: [Project!]!
+    following: [User!]!
+}
+
+type Token {
+  token: String!
+  email: String!
+  firstname: String!
+  lastname: String!
+}
+
+type Message {
+  message: String!
+}
+
+type Project {
+  title: String!
+  poster: String!
+}
+
+type Query {
+    allUsers: [User!]!
+    findUser(email: String!): User
+    currentUser: User
+}
+
+type Mutation {
+    addUser(
+        firstname: String!
+        lastname: String!
+        birthdate: String!
+        email: String!
+        passwordHash: String!
+    ): User
+
+    login(
+      email: String!
+      password: String!
+    ): Token
+
+    passwordReset(
+      email: String!
+    ): Message
+
+    passwordReset2(
+      userId: String!
+      token: String!
+      newPassword: String! 
+    ): Message
+
+    followUser(
+      emailToFollow: String!
+    ): User
+
+    editUser(
+        firstname: String!
+        lastname: String!
+        birthdate: String!
+        email: String!
+    ): User
+
+    addProject(
+      title: String!
+      poster: String!
+    ): Project
+}
