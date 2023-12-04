@@ -7,8 +7,8 @@ const Token = require('../models/token')
 // eslint-disable-next-line no-unused-vars
 const { _, __, ___, _____, ______, TEMPLATE_ID, PUBLIC_KEY, PRIVATE_KEY, SERVICE_ID } = require('../utils/config')
 
-const clientURL = 'http://localhost:5173/test'
-// const clientURL = 'https://screenwriters.quest/test'
+// const clientURL = 'http://localhost:5173/test'
+const clientURL = 'https://screenwriters.quest/test'
 
 usersRouter.get('/', async (_, response) => {
   const users = await User.find({})
