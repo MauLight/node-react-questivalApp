@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
 
+const Website = new mongoose.Schema({
+  url: String,
+  title: String
+})
+
 const userSchema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -34,6 +39,15 @@ const userSchema = new mongoose.Schema({
       }
     },
     required: true
+  },
+  avatar: {
+    type: String
+  },
+  location: {
+    type: String
+  },
+  website: {
+    type: Website
   },
   // ! Stores an array of ObjectIds' from Project model
   projects: [

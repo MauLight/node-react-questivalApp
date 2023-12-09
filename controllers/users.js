@@ -59,9 +59,9 @@ usersRouter.post('/', async (request, response, next) => {
 })
 
 usersRouter.put('/:id', (request, response, next) => {
-  const { firstname, lastname, birthdate, email } = request.body
+  const { firstname, lastname, birthdate, email, avatar, location, website } = request.body
 
-  User.findByIdAndUpdate(request.params.id, { firstname, lastname, birthdate, email }, { new: true, runValidators: true, context: 'query' })
+  User.findByIdAndUpdate(request.params.id, { firstname, lastname, birthdate, email, avatar, location, website }, { new: true, runValidators: true, context: 'query' })
     .then(updatedUser => { response.json(updatedUser) })
     .catch(error => next(error))
 })
