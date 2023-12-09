@@ -46,7 +46,9 @@ usersRouter.post('/', async (request, response, next) => {
     birthdate,
     email,
     passwordHash,
-    avatar: avatar || ''
+    avatar: avatar || '',
+    location: 'location',
+    website: { url: 'url', title: 'title' }
   })
 
   if (firstname === undefined || lastname === undefined || birthdate === undefined || email === undefined || password === undefined) {
