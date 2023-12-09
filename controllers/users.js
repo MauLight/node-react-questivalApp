@@ -26,7 +26,7 @@ usersRouter.get('/:id', async (request, response) => {
 })
 
 usersRouter.post('/', async (request, response, next) => {
-  const { firstname, lastname, email, birthdate, password } = request.body
+  const { firstname, lastname, email, birthdate, password, avatar } = request.body
 
   const savedUser = await User.find({ email })
   if (savedUser.length > 0) {
@@ -45,7 +45,8 @@ usersRouter.post('/', async (request, response, next) => {
     lastname,
     birthdate,
     email,
-    passwordHash
+    passwordHash,
+    avatar: avatar || ''
   })
 
   if (firstname === undefined || lastname === undefined || birthdate === undefined || email === undefined || password === undefined) {
