@@ -35,6 +35,18 @@ loginRouter.post('/', async (request, response) => {
     avatar: user.avatar || '',
     location: user.location || '',
     website: user.website || { url: '', title: 'website' },
+    social: user.social,
+    introduction: user.introduction,
+    education: user.education,
+    experience: user.experience,
+    certificates: user.certificates || [],
+    projects: user.projects || [],
+    read: user.read || [],
+    favorites: user.favorites || [],
+    saved: user.saved || [],
+    courses: user.courses || [],
+    followers: user.followers || [],
+    following: user.following || [],
     id: user.id
   })
 })

@@ -1,11 +1,38 @@
 const mongoose = require('mongoose')
 
 const Website = new mongoose.Schema({
+  url: {
+    type: String,
+    default: ''
+  },
+  title: {
+    type: String,
+    default: ''
+  }
+})
+const Social = new mongoose.Schema({
+  instagram: {
+    type: String,
+    default: ''
+  },
+  linkedin: {
+    type: String,
+    default: ''
+  },
+  discord: {
+    type: String,
+    default: ''
+  }
+})
+
+const Certificate = new mongoose.Schema({
+  title: String,
   url: String,
-  title: String
 })
 
 const userSchema = new mongoose.Schema({
+
+  //* Basic Information
   firstname: {
     type: String,
     minLength: 3,
@@ -40,15 +67,42 @@ const userSchema = new mongoose.Schema({
     },
     required: true
   },
+
+  //* Additional Information
   avatar: {
-    type: String
+    type: String,
+    default: ''
   },
   location: {
-    type: String
+    type: String,
+    default: ''
   },
   website: {
-    type: Website
+    type: Website,
+    default: ''
   },
+  social: {
+    type: Social,
+    default: ''
+  },
+
+  //* Profile information
+  introduction: {
+    type: String,
+    default: ''
+  },
+  education: {
+    type: String,
+    default: ''
+  },
+  experience: {
+    type: String,
+    default: ''
+  },
+  certificates: {
+    type: Certificate
+  },
+
   // ! Stores an array of ObjectIds' from Project model
   projects: [
     {
@@ -56,12 +110,32 @@ const userSchema = new mongoose.Schema({
       ref: 'Project'
     }
   ],
+  read: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project'
+    }
+  ],
+  favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project'
+    }
+  ],
+  saved: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project'
+    }
+  ],
+
   courses: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Course'
     }
   ],
+
   followers: [
     {
       type: mongoose.Schema.Types.ObjectId,
