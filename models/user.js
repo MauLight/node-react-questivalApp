@@ -83,7 +83,6 @@ const userSchema = new mongoose.Schema({
   },
   social: {
     type: Social,
-    default: ''
   },
 
   //* Profile information
