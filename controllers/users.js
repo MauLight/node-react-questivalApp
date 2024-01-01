@@ -11,12 +11,12 @@ const { _, __, ___, _____, ______, TEMPLATE_ID, PUBLIC_KEY, PRIVATE_KEY, SERVICE
 const clientURL = 'https://screenwriters.quest/test'
 
 usersRouter.get('/', async (_, response) => {
-  const users = await User.find({})
+  const users = await User.find({}).populate('following').populate('followers')
   response.json(users)
 })
 
 usersRouter.get('/:id', async (request, response) => {
-  const user = await User.findById(request.params.id)
+  const user = await User.findById(request.params.id).populate('following').populate('followers')
   if (user) {
     response.json(user)
   }
@@ -163,5 +163,81 @@ usersRouter.delete('/:id', (request, response, next) => {
     .then(result => { response.status(204).end() })
     .catch(error => next(error))
 })
+
+usersRouter.put('/', async (request, response) => {
+  const { userToFollowId, myId } = request.body
+
+  if (userToFollowId === myId) {
+    response.status(400).json({ error: 'User can\'t follow themselves' })
+    return
+  }
+
+  let myUser = await User.findById(myId)
+  console.log('this is my user', myUser.following)
+
+  const checkFollowing = myUser.following.filter(elem => elem._id.toString() === userToFollowId)
+  if (checkFollowing.length > 0) {
+    response.status(400).json({ error: 'Current User already follows this user.' })
+    return
+  }
+
+  const userToFollow = await User.findById(userToFollowId)
+  console.log('this is the user to follow', userToFollow)
+
+  await User.findByIdAndUpdate(userToFollowId, { followers: userToFollow.followers.concat(myUser) })
+  await User.findByIdAndUpdate(myId, { following: myUser.following.concat(userToFollow) })
+
+  myUser = await User.findById(myId)
+
+  response.status(200).json(myUser)
+})
+usersRouter.post('/update', async (request, response) => {
+  const { userToUnfollowId, myId } = request.body
+
+  let myUser = await User.findById(myId)
+
+  const userToUnfollow = await User.findById(userToUnfollowId)
+  console.log('this is the user to unfollow', userToUnfollow)
+
+  await User.findByIdAndUpdate(userToUnfollowId, { followers: userToUnfollow.followers.filter(elem => elem._id.toString() !== myId) })
+  await User.findByIdAndUpdate(myId, { following: myUser.following.filter(elem => elem._id.toString() !== userToUnfollowId) })
+
+  myUser = await User.findById(myId)
+  console.log('this is my updated user', myUser.following)
+
+  response.status(200).json(myUser)
+})
+
+// usersRouter.put('/update', async (request, response) => {
+//   const { userToUnfollowId, myId } = request.body
+//   console.log(userToUnfollowId)
+//   console.log(myId)
+
+//   if (userToUnfollowId === myId) {
+//     response.status(400).json({ error: 'User can\'t unfollow themselves' })
+//     return
+//   }
+
+//   console.log('first step passed!')
+
+//   let myUser = await User.findById(myId)
+//   console.log('this is my user', myUser.following)
+
+//   const checkFollowing = myUser.following.filter(elem => elem._id.toString() === userToUnfollowId)
+//   if (checkFollowing.length === 0) {
+//     response.status(400).json({ error: 'Current User doesn\'t follows this user.' })
+//     return
+//   }
+
+//   const userToUnfollow = await User.findById(userToUnfollowId)
+//   console.log('this is the user to follow', userToUnfollow)
+
+//   await User.findByIdAndUpdate(userToUnfollowId, { followers: userToUnfollow.followers.filter(elem => elem._id.toString() !== myId) })
+//   await User.findByIdAndUpdate(myId, { following: myUser.following.filter(elem => elem._id.toString() !== userToUnfollowId) })
+
+//   myUser = await User.findById(myId)
+
+//   response.status(200).json(myUser)
+// })
 
 module.exports = usersRouter

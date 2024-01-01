@@ -46,7 +46,6 @@ const userSchema = new mongoose.Schema({
   birthdate: {
     type: Date,
     min: '1923-01-01',
-    required: true
   },
   email: {
     type: String,
