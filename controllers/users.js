@@ -164,6 +164,7 @@ usersRouter.delete('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
+//* Follow a user
 usersRouter.put('/', async (request, response) => {
   const { userToFollowId, myId } = request.body
 
@@ -191,6 +192,8 @@ usersRouter.put('/', async (request, response) => {
 
   response.status(200).json(myUser)
 })
+
+//* Unfollow a user
 usersRouter.post('/update', async (request, response) => {
   const { userToUnfollowId, myId } = request.body
 
@@ -207,37 +210,5 @@ usersRouter.post('/update', async (request, response) => {
 
   response.status(200).json(myUser)
 })
-
-// usersRouter.put('/update', async (request, response) => {
-//   const { userToUnfollowId, myId } = request.body
-//   console.log(userToUnfollowId)
-//   console.log(myId)
-
-//   if (userToUnfollowId === myId) {
-//     response.status(400).json({ error: 'User can\'t unfollow themselves' })
-//     return
-//   }
-
-//   console.log('first step passed!')
-
-//   let myUser = await User.findById(myId)
-//   console.log('this is my user', myUser.following)
-
-//   const checkFollowing = myUser.following.filter(elem => elem._id.toString() === userToUnfollowId)
-//   if (checkFollowing.length === 0) {
-//     response.status(400).json({ error: 'Current User doesn\'t follows this user.' })
-//     return
-//   }
-
-//   const userToUnfollow = await User.findById(userToUnfollowId)
-//   console.log('this is the user to follow', userToUnfollow)
-
-//   await User.findByIdAndUpdate(userToUnfollowId, { followers: userToUnfollow.followers.filter(elem => elem._id.toString() !== myId) })
-//   await User.findByIdAndUpdate(myId, { following: myUser.following.filter(elem => elem._id.toString() !== userToUnfollowId) })
-
-//   myUser = await User.findById(myId)
-
-//   response.status(200).json(myUser)
-// })
 
 module.exports = usersRouter
