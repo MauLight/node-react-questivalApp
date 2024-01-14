@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const fns = require('date-fns')
 const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const User = require('../models/user')
@@ -31,7 +30,6 @@ loginRouter.post('/', async (request, response) => {
     email: user.email,
     firstname: user.firstname,
     lastname: user.lastname,
-    birthdate: fns.format(user.birthdate, 'dd/MM/yyyy'),
     avatar: user.avatar || '',
     location: user.location || '',
     website: user.website || { url: '', title: 'website' },
