@@ -1,21 +1,30 @@
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
+const jwt = require('jsonwebtoken')
 const emailjs = require('@emailjs/nodejs')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const Token = require('../models/token')
 // eslint-disable-next-line no-unused-vars
-const { _, __, ___, _____, ______, TEMPLATE_ID, PUBLIC_KEY, PRIVATE_KEY, SERVICE_ID } = require('../utils/config')
+const { _, __, SECRET, _____, ______, TEMPLATE_ID, PUBLIC_KEY, PRIVATE_KEY, SERVICE_ID } = require('../utils/config')
 
 // const clientURL = 'http://localhost:5173/test'
 const clientURL = 'https://screenwriters.quest/test'
 
-usersRouter.get('/', async (_, response) => {
+//* Geat All Users
+usersRouter.get('/', async (request, response) => {
+  const decodedToken = jwt.verify(request.body.token, SECRET)
+  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
+
   const users = await User.find({}).populate('following').populate('followers')
   response.json(users)
 })
 
+//* Get a Specific User
 usersRouter.get('/:id', async (request, response) => {
+  const decodedToken = jwt.verify(request.body.token, SECRET)
+  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
+
   const user = await User.findById(request.params.id).populate('following').populate('followers')
   if (user) {
     response.json(user)
@@ -25,18 +34,19 @@ usersRouter.get('/:id', async (request, response) => {
   }
 })
 
+//* Post a New User
 usersRouter.post('/', async (request, response, next) => {
-  const { firstname, lastname, email, password, avatar } = request.body
+  const decodedToken = jwt.verify(request.body.token, SECRET)
+  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
 
+  const { firstname, lastname, email, password, avatar } = request.body
   const savedUser = await User.find({ email })
   if (savedUser.length > 0) {
-    console.log('Email is already taken.')
     return response.status(401).json({
       error: 'Email is already taken.'
     })
   }
 
-  console.log('this is the request', request.body)
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
@@ -60,7 +70,11 @@ usersRouter.post('/', async (request, response, next) => {
     .catch(error => next(error))
 })
 
+//* Update a User
 usersRouter.put('/:id', (request, response, next) => {
+  const decodedToken = jwt.verify(request.body.token, SECRET)
+  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
+
   const { firstname, lastname, birthdate, email, avatar, location, website } = request.body
 
   User.findByIdAndUpdate(request.params.id, { firstname, lastname, birthdate, email, avatar, location, website }, { new: true, runValidators: true, context: 'query' })
@@ -157,6 +171,9 @@ usersRouter.post('/newPassword', async (request, response) => {
 })
 
 usersRouter.delete('/:id', (request, response, next) => {
+  const decodedToken = jwt.verify(request.body.token, SECRET)
+  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
+
   User.findByIdAndRemove(request.params.id)
     // eslint-disable-next-line no-unused-vars
     .then(result => { response.status(204).end() })
@@ -165,6 +182,9 @@ usersRouter.delete('/:id', (request, response, next) => {
 
 //* Follow a user
 usersRouter.put('/', async (request, response) => {
+  const decodedToken = jwt.verify(request.body.token, SECRET)
+  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
+
   const { userToFollowId, myId } = request.body
 
   if (userToFollowId === myId) {
@@ -194,6 +214,9 @@ usersRouter.put('/', async (request, response) => {
 
 //* Unfollow a user
 usersRouter.post('/update', async (request, response) => {
+  const decodedToken = jwt.verify(request.body.token, SECRET)
+  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
+
   const { userToUnfollowId, myId } = request.body
 
   let myUser = await User.findById(myId)
