@@ -43,10 +43,6 @@ const userSchema = new mongoose.Schema({
     minLength: 3,
     required: true
   },
-  birthdate: {
-    type: Date,
-    min: '1923-01-01',
-  },
   email: {
     type: String,
     required: true,

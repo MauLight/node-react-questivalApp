@@ -26,7 +26,7 @@ usersRouter.get('/:id', async (request, response) => {
 })
 
 usersRouter.post('/', async (request, response, next) => {
-  const { firstname, lastname, email, birthdate, password, avatar } = request.body
+  const { firstname, lastname, email, password, avatar } = request.body
 
   const savedUser = await User.find({ email })
   if (savedUser.length > 0) {
@@ -43,7 +43,6 @@ usersRouter.post('/', async (request, response, next) => {
   const user = new User({
     firstname,
     lastname,
-    birthdate,
     email,
     passwordHash,
     avatar: avatar || '',
@@ -51,7 +50,7 @@ usersRouter.post('/', async (request, response, next) => {
     website: { url: 'url', title: 'title' }
   })
 
-  if (firstname === undefined || lastname === undefined || birthdate === undefined || email === undefined || password === undefined) {
+  if (firstname === undefined || lastname === undefined || email === undefined || password === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
 
