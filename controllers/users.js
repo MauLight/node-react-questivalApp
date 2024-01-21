@@ -11,11 +11,6 @@ const { _, __, SECRET, _____, ______, TEMPLATE_ID, PUBLIC_KEY, PRIVATE_KEY, SERV
 // const clientURL = 'http://localhost:5173/test'
 const clientURL = 'https://screenwriters.quest/test'
 
-usersRouter.get('/', async (request, response) => {
-  const users = await User.find({})
-  return response.json(users)
-})
-
 //* Get All Users
 usersRouter.post('/', async (request, response) => {
   const token = request.body.token
