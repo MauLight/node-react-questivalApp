@@ -74,7 +74,7 @@ const userSchema = new mongoose.Schema({
   },
   website: {
     type: Website,
-    default: ''
+    default: { url: '', title: '' }
   },
   social: {
     type: Social,

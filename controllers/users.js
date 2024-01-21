@@ -11,35 +11,45 @@ const { _, __, SECRET, _____, ______, TEMPLATE_ID, PUBLIC_KEY, PRIVATE_KEY, SERV
 // const clientURL = 'http://localhost:5173/test'
 const clientURL = 'https://screenwriters.quest/test'
 
-//* Geat All Users
 usersRouter.get('/', async (request, response) => {
-  const decodedToken = jwt.verify(request.body.token, SECRET)
+  const users = await User.find({})
+  return response.json(users)
+})
+
+//* Get All Users
+usersRouter.post('/', async (request, response) => {
+  const token = request.body.token
+  if (!token) return response.status(400).json({ error: 'No token provided.' })
+  const decodedToken = jwt.verify(token, SECRET)
   if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
 
   const users = await User.find({}).populate('following').populate('followers')
-  response.json(users)
+  return response.json(users)
 })
 
 //* Get a Specific User
-usersRouter.get('/:id', async (request, response) => {
-  const decodedToken = jwt.verify(request.body.token, SECRET)
-  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
+usersRouter.post('/user', async (request, response) => {
+  const verifyToken = jwt.verify(request.body.token, SECRET)
+  if (!verifyToken) response.status(400).json({ error: 'Bad Credentials.' })
 
-  const user = await User.findById(request.params.id).populate('following').populate('followers')
+  const { email, id } = jwt.decode(request.body.token, SECRET)
+  console.log(email)
+  console.log(id)
+
+  const user = await User.findById(id).populate('following').populate('followers')
+  console.log(user)
   if (user) {
-    response.json(user)
+    return response.json(user)
   }
   else {
-    response.status(404).end()
+    return response.status(404).end()
   }
 })
 
 //* Post a New User
-usersRouter.post('/', async (request, response, next) => {
-  const decodedToken = jwt.verify(request.body.token, SECRET)
-  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
-
-  const { firstname, lastname, email, password, avatar } = request.body
+usersRouter.post('/signup', async (request, response, next) => {
+  console.log('We are here!')
+  const { firstname, lastname, email, password } = request.body
   const savedUser = await User.find({ email })
   if (savedUser.length > 0) {
     return response.status(401).json({
@@ -54,10 +64,7 @@ usersRouter.post('/', async (request, response, next) => {
     firstname,
     lastname,
     email,
-    passwordHash,
-    avatar: avatar || '',
-    location: 'location',
-    website: { url: 'url', title: 'title' }
+    passwordHash
   })
 
   if (firstname === undefined || lastname === undefined || email === undefined || password === undefined) {
@@ -217,15 +224,15 @@ usersRouter.post('/update', async (request, response) => {
   const decodedToken = jwt.verify(request.body.token, SECRET)
   if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
 
-  const { userToUnfollowId, myId } = request.body
+  const { userToFollowId, myId } = request.body
 
   let myUser = await User.findById(myId)
 
-  const userToUnfollow = await User.findById(userToUnfollowId)
+  const userToUnfollow = await User.findById(userToFollowId)
   console.log('this is the user to unfollow', userToUnfollow)
 
-  await User.findByIdAndUpdate(userToUnfollowId, { followers: userToUnfollow.followers.filter(elem => elem._id.toString() !== myId) })
-  await User.findByIdAndUpdate(myId, { following: myUser.following.filter(elem => elem._id.toString() !== userToUnfollowId) })
+  await User.findByIdAndUpdate(userToFollowId, { followers: userToUnfollow.followers.filter(elem => elem._id.toString() !== myId) })
+  await User.findByIdAndUpdate(myId, { following: myUser.following.filter(elem => elem._id.toString() !== userToFollowId) })
 
   myUser = await User.findById(myId)
   console.log('this is my updated user', myUser.following)
