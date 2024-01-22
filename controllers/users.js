@@ -22,6 +22,22 @@ usersRouter.post('/', async (request, response) => {
   return response.json(users)
 })
 
+//* Check a Specific User
+usersRouter.post('/userexists', async (request, response) => {
+
+  const { email } = request.body
+  console.log('this is the email', email)
+
+  const user = await User.findOne(email)
+  console.log(user)
+  if ('this is the user:', user) {
+    return response.json({ check: true })
+  }
+  else {
+    return response.status(404).end()
+  }
+})
+
 //* Get a Specific User
 usersRouter.post('/user', async (request, response) => {
   const verifyToken = jwt.verify(request.body.token, SECRET)
