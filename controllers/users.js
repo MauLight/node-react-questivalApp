@@ -24,17 +24,18 @@ usersRouter.post('/', async (request, response) => {
 
 //* Check a Specific User
 usersRouter.post('/userexists', async (request, response) => {
-
+  console.log('this is the request', request.body)
   const { email } = request.body
   console.log('this is the email', email)
 
-  const user = await User.findOne(email)
-  console.log(user)
-  if ('this is the user:', user) {
-    return response.json({ check: true })
+  const userExists = await User.findOne({ email })
+  console.log('this the user', userExists)
+  if (!userExists) {
+    console.log('ready to sign up!')
+    return response.json({ check: false })
   }
   else {
-    return response.status(404).end()
+    return response.json({ check: true })
   }
 })
 
