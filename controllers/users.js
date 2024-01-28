@@ -8,8 +8,8 @@ const Token = require('../models/token')
 // eslint-disable-next-line no-unused-vars
 const { _, __, SECRET, _____, ______, TEMPLATE_ID, PUBLIC_KEY, PRIVATE_KEY, SERVICE_ID } = require('../utils/config')
 
-// const clientURL = 'http://localhost:5173/test'
-const clientURL = 'https://screenwriters.quest/test'
+//const clientURL = 'https://localhost:3000/test#'
+const clientURL = 'https://screenwriters.quest/test#'
 
 //* Get All Users
 usersRouter.post('/', async (request, response) => {
@@ -124,7 +124,7 @@ usersRouter.post('/passwordReset', async (request, response) => {
   }).save()
 
   //*Create link with token and id to send in email to user.
-  const link = `${clientURL}/#passwordReset?token=${resetToken}&id=${user.id}`
+  const link = `${clientURL}/passwordreset?token=${resetToken}&id=${user.id}`
   const emailParams = {
     user_name: user.firstname + ' ' + user.lastname,
     user_email: user.email,
