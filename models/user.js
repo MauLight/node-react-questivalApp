@@ -78,6 +78,7 @@ const userSchema = new mongoose.Schema({
   },
   social: {
     type: Social,
+    default: { instagram: '', linkedin: '', discord: '' }
   },
 
   //* Profile information
