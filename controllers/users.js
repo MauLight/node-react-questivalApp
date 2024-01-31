@@ -58,6 +58,23 @@ usersRouter.post('/user', async (request, response) => {
   }
 })
 
+//* Get a Specific other User
+usersRouter.post('/visitinguser', async (request, response) => {
+  const verifyToken = jwt.verify(request.body.token, SECRET)
+  if (!verifyToken) response.status(400).json({ error: 'Bad Credentials.' })
+
+  const id = request.body.id
+
+  const user = await User.findById(id).populate('following').populate('followers')
+  console.log(user)
+  if (user) {
+    return response.json(user)
+  }
+  else {
+    return response.status(404).end()
+  }
+})
+
 //* Post a New User
 usersRouter.post('/signup', async (request, response, next) => {
   console.log('We are here!')
