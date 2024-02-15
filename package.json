@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/MauLight/mythify-backend#readme",
   "dependencies": {
-    "@apollo/server": "^4.9.5",
+    "@apollo/server": "^4.10.0",
     "@emailjs/nodejs": "^2.2.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
