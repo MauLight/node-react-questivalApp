@@ -28,7 +28,7 @@ app.use(middleware.requestLogger)
 
 app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
-app.use('api/preregister', preregisterRouter)
+app.use('/api/preregister', preregisterRouter)
 
 
 app.use(middleware.unknownEndPoint)
