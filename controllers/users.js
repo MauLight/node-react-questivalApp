@@ -24,9 +24,7 @@ usersRouter.post('/', async (request, response) => {
 
 //* Check a Specific User
 usersRouter.post('/userexists', async (request, response) => {
-  console.log('this is the request', request.body)
   const { email } = request.body
-  console.log('this is the email', email)
 
   const userExists = await User.findOne({ email })
   console.log('this the user', userExists)

@@ -10,6 +10,9 @@ const PUBLIC_KEY = process.env.PUBLIC_KEY
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 const SERVICE_ID = process.env.SERVICE_ID
 const JWT_SECRET = process.env.JWT_SECRET
+const STRIPE_PRIVATE_KEY = process.env.STRIPE_PRIVATE_KEY
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID
+const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET
 
 module.exports = {
   PORT,
@@ -21,5 +24,8 @@ module.exports = {
   PUBLIC_KEY,
   PRIVATE_KEY,
   SERVICE_ID,
-  JWT_SECRET
+  JWT_SECRET,
+  STRIPE_PRIVATE_KEY,
+  PAYPAL_CLIENT_ID,
+  PAYPAL_CLIENT_SECRET
 }
