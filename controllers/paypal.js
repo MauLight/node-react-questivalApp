@@ -5,7 +5,7 @@ const Payer = require('../models/payer')
 
 const HOST = 'http://localhost:3001/api/paypal'
 const PAYPAL_API = 'https://api-m.sandbox.paypal.com'
-const clientURL = 'http://localhost:3000'
+const clientURL = 'https://localhost:3000/#'
 
 paypalRouter.post('/create-order', async (request, response) => {
   const { id, quantity } = request.body
