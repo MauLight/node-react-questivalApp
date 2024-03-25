@@ -4,9 +4,9 @@ const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = require('../utils/config')
 const Payer = require('../models/payer')
 const User = require('../models/user')
 
-const HOST = 'http://localhost:3001/api/paypal'
-const PAYPAL_API = 'https://api-m.sandbox.paypal.com'
-const clientURL = 'https://localhost:3000/#'
+const HOST = 'https://questivalapp-node-backend-together.onrender.com/api/paypal'
+const PAYPAL_API = 'https://api-m.paypal.com'
+const clientURL = 'https://ctlst.pro/#'
 
 paypalRouter.post('/create-order', async (request, response) => {
   const { id, quantity } = request.body
