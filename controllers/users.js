@@ -75,8 +75,7 @@ usersRouter.post('/visitinguser', async (request, response) => {
 
 //* Post a New User
 usersRouter.post('/signup', async (request, response, next) => {
-  console.log('We are here!')
-  const { firstname, lastname, email, password } = request.body
+  const { firstname, lastname, email, password, course } = request.body
   const savedUser = await User.find({ email })
   if (savedUser.length > 0) {
     return response.status(401).json({
@@ -87,12 +86,28 @@ usersRouter.post('/signup', async (request, response, next) => {
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  const user = new User({
-    firstname,
-    lastname,
-    email,
-    passwordHash
-  })
+  let user
+
+  if (course === '') {
+    user = new User({
+      firstname,
+      lastname,
+      email,
+      passwordHash
+    })
+  } else {
+    user = new User({
+      firstname,
+      lastname,
+      email,
+      passwordHash,
+      register: {
+        registered: false,
+        course,
+        paymentId: ''
+      }
+    })
+  }
 
   if (firstname === undefined || lastname === undefined || email === undefined || password === undefined) {
     return response.status(400).json({ error: 'content missing' })
@@ -109,9 +124,9 @@ usersRouter.put('/:id', (request, response, next) => {
   const decodedToken = jwt.verify(request.body.token, SECRET)
   if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
 
-  const { firstname, lastname, birthdate, email, avatar, location, website } = request.body
+  const { firstname, lastname, email, avatar, location, website } = request.body
 
-  User.findByIdAndUpdate(request.params.id, { firstname, lastname, birthdate, email, avatar, location, website }, { new: true, runValidators: true, context: 'query' })
+  User.findByIdAndUpdate(request.params.id, { firstname, lastname, email, avatar, location, website }, { new: true, runValidators: true, context: 'query' })
     .then(updatedUser => { response.json(updatedUser) })
     .catch(error => next(error))
 })

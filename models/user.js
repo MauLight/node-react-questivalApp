@@ -62,6 +62,20 @@ const userSchema = new mongoose.Schema({
     },
     required: true
   },
+  register: {
+    paymentId: {
+      type: String,
+      default: ''
+    },
+    registered: {
+      type: Boolean,
+      default: false
+    },
+    course: {
+      type: String,
+      default: ''
+    }
+  },
 
   //* Additional Information
   avatar: {

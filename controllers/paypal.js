@@ -2,6 +2,7 @@ const axios = require('axios')
 const paypalRouter = require('express').Router()
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = require('../utils/config')
 const Payer = require('../models/payer')
+const User = require('../models/user')
 
 const HOST = 'http://localhost:3001/api/paypal'
 const PAYPAL_API = 'https://api-m.sandbox.paypal.com'
@@ -90,11 +91,37 @@ paypalRouter.get('/capture-order', async (request, response) => {
     console.log(res.data)
     const payer = new Payer(res.data)
     await payer.save()
-    response.redirect(`${clientURL}/payment-success`)
+    response.redirect(`${clientURL}/payment-success?paymentId=${res.data.id}`)
   }
   catch (error) {
     console.log(error)
     response.status(500).json({ error: 'Internal server error.' })
+  }
+})
+
+paypalRouter.post('/check-order', async (request, response) => {
+  const { paymentId, id } = request.body
+  console.log('1. Checking order:', paymentId)
+  console.log('1. Checking userId:', id)
+  const payer = await Payer.findOne({ id: paymentId })
+  console.log(payer, 'this is the payer')
+  if (payer) {
+    console.log('2. Checking payer:', payer.id)
+    const userTaken = await User.findOne({ 'register.paymentId': paymentId })
+    console.log('3. Checking user:', userTaken)
+    if (userTaken) {
+      return response.status(404).json({ error: 'A user has already registered with this order.' })
+    }
+
+    const user = await User.findById(id)
+    console.log('4. Find user:', user.firstname)
+    user.register.paymentId = paymentId
+    user.register.registered = true
+    await user.save()
+    return response.json({ validate: true })
+  }
+  else {
+    return response.status(404).json({ error: 'Payment not found.' })
   }
 })
 
