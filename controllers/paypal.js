@@ -1,5 +1,6 @@
 const axios = require('axios')
 const paypalRouter = require('express').Router()
+const postmark = require('postmark')
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = require('../utils/config')
 const Payer = require('../models/payer')
 const User = require('../models/user')
@@ -96,6 +97,16 @@ paypalRouter.get('/capture-order', async (request, response) => {
     console.log(res.data)
     const payer = new Payer(res.data)
     await payer.save()
+    const client = new postmark.ServerClient('859ff21a-921b-4b00-9487-4ef2561df8fd')
+    const email = {
+      'From': 'contact@maulight.com',
+      'To': 'contact@maulight.com',
+      'Subject': 'Hello from Postmark',
+      'HtmlBody': '<strong>Hello</strong> dear Mau Light!',
+      'TextBody': 'Hello from Postmark!',
+      'MessageStream': 'outbound'
+    }
+    client.sendEmail(email)
     response.redirect(`${clientURL}/payment-success?paymentId=${res.data.id}`)
   }
   catch (error) {
