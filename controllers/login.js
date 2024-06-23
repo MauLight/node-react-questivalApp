@@ -24,24 +24,15 @@ loginRouter.post('/', async (request, response) => {
     id: user._id
   }
 
-  const token = jwt.sign(userForToken, SECRET, { expiresIn: '10d' })
+  const token = jwt.sign(userForToken, SECRET)
   response.status(200).send({
     token,
     email: user.email,
-    firstname: user.firstname,
-    lastname: user.lastname,
-    avatar: user.avatar || '',
-    location: user.location || '',
-    website: user.website || { url: '', title: 'website' },
-    social: user.social || { instagram: '', linkedin: '', discord: '' },
-    introduction: user.introduction,
-    education: user.education,
-    experience: user.experience,
-    certificates: user.certificates || [],
-    projects: user.projects || [],
-    read: user.read || [],
-    favorites: user.favorites || [],
-    saved: user.saved || [],
+    username: user.username,
+    avatar: user.avatar,
+    banner: user.banner,
+    location: user.location,
+    social: user.social,
     courses: user.courses || [],
     followers: user.followers || [],
     following: user.following || [],

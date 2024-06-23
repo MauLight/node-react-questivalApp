@@ -9,6 +9,7 @@ const usersRouter = require('./controllers/users')
 const preregisterRouter = require('./controllers/preregister')
 const checkoutRouter = require('./controllers/checkout')
 const paypalRouter = require('./controllers/paypal')
+const postsRouter = require('./controllers/posts')
 
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
@@ -33,6 +34,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/preregister', preregisterRouter)
 app.use('/api/checkout', checkoutRouter)
 app.use('/api/paypal', paypalRouter)
+app.use('/api/posts', postsRouter)
 
 
 app.use(middleware.unknownEndPoint)

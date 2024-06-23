@@ -33,15 +33,18 @@ const Certificate = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
 
   //* Basic Information
-  firstname: {
+  username: {
     type: String,
     minLength: 3,
     required: true
   },
+  firstname: {
+    type: String,
+    minLength: 3,
+  },
   lastname: {
     type: String,
     minLength: 3,
-    required: true
   },
   email: {
     type: String,
@@ -79,8 +82,24 @@ const userSchema = new mongoose.Schema({
 
   //* Additional Information
   avatar: {
-    type: String,
-    default: ''
+    fileUrl: {
+      type: String,
+      default: ''
+    },
+    filePath: {
+      type: String,
+      default: ''
+    }
+  },
+  banner: {
+    fileUrl: {
+      type: String,
+      default: ''
+    },
+    filePath: {
+      type: String,
+      default: ''
+    }
   },
   location: {
     type: String,

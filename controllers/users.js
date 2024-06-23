@@ -74,8 +74,8 @@ usersRouter.post('/visitinguser', async (request, response) => {
 })
 
 //* Post a New User
-usersRouter.post('/signup', async (request, response, next) => {
-  const { firstname, lastname, email, password, course } = request.body
+usersRouter.post('/sign', async (request, response, next) => {
+  const { username, email, password, course } = request.body
   const savedUser = await User.find({ email })
   if (savedUser.length > 0) {
     return response.status(401).json({
@@ -90,15 +90,13 @@ usersRouter.post('/signup', async (request, response, next) => {
 
   if (course === '') {
     user = new User({
-      firstname,
-      lastname,
+      username,
       email,
       passwordHash
     })
   } else {
     user = new User({
-      firstname,
-      lastname,
+      username,
       email,
       passwordHash,
       register: {
@@ -109,8 +107,8 @@ usersRouter.post('/signup', async (request, response, next) => {
     })
   }
 
-  if (firstname === undefined || lastname === undefined || email === undefined || password === undefined) {
-    return response.status(400).json({ error: 'content missing' })
+  if (username === undefined || email === undefined || password === undefined) {
+    return response.status(400).json({ error: 'Fields are missing' })
   }
 
   user.save().then(savedUser => {
@@ -124,9 +122,33 @@ usersRouter.put('/:id', (request, response, next) => {
   const decodedToken = jwt.verify(request.body.token, SECRET)
   if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
 
-  const { firstname, lastname, email, avatar, location, website } = request.body
+  const { username, email, avatar, location, website } = request.body
 
-  User.findByIdAndUpdate(request.params.id, { firstname, lastname, email, avatar, location, website }, { new: true, runValidators: true, context: 'query' })
+  User.findByIdAndUpdate(request.params.id, { username, email, avatar, location, website }, { new: true, runValidators: true, context: 'query' })
+    .then(updatedUser => { response.json(updatedUser) })
+    .catch(error => next(error))
+})
+
+//* Update a User profile pic
+usersRouter.put('/profilepic/:id', (request, response, next) => {
+  const decodedToken = jwt.verify(request.body.token, SECRET)
+  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
+
+  const { avatar } = request.body
+
+  User.findByIdAndUpdate(request.params.id, { avatar }, { new: true, runValidators: true, context: 'query' })
+    .then(updatedUser => { response.json(updatedUser) })
+    .catch(error => next(error))
+})
+
+//* Update a User profile banner
+usersRouter.put('/profilebanner/:id', (request, response, next) => {
+  const decodedToken = jwt.verify(request.body.token, SECRET)
+  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
+
+  const { banner } = request.body
+
+  User.findByIdAndUpdate(request.params.id, { banner }, { new: true, runValidators: true, context: 'query' })
     .then(updatedUser => { response.json(updatedUser) })
     .catch(error => next(error))
 })
@@ -242,7 +264,6 @@ usersRouter.put('/', async (request, response) => {
   }
 
   let myUser = await User.findById(myId)
-  console.log('this is my user', myUser.following)
 
   const checkFollowing = myUser.following.filter(elem => elem._id.toString() === userToFollowId)
   if (checkFollowing.length > 0) {
@@ -251,7 +272,6 @@ usersRouter.put('/', async (request, response) => {
   }
 
   const userToFollow = await User.findById(userToFollowId)
-  console.log('this is the user to follow', userToFollow)
 
   await User.findByIdAndUpdate(userToFollowId, { followers: userToFollow.followers.concat(myUser) })
   await User.findByIdAndUpdate(myId, { following: myUser.following.concat(userToFollow) })
