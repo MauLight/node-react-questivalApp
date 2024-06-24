@@ -11,6 +11,12 @@ postsRouter.get('/', async (request, response) => {
   response.json(posts)
 })
 
+//* Get a specific post
+postsRouter.get('/:id', async (request, response) => {
+  const post = await Post.findById(request.params.id)
+  response.json(post)
+})
+
 //* Post a new post
 postsRouter.post('/', async (request, response) => {
   const decodedToken = jwt.verify(request.body.token, SECRET)
@@ -24,12 +30,22 @@ postsRouter.post('/', async (request, response) => {
     })
   }
 
+  const user = await User.findById(userId)
+  if (!user) {
+    return response.status(401).json({
+      error: 'User not found.'
+    })
+  }
+
   const post = new Post({
     title,
     paragraph,
     imageUrl,
     created_at,
-    userId
+    userId,
+    username: user.username,
+    email: user.email,
+    avatar: user.avatar
   })
 
   const savedPost = await post.save()

@@ -6,6 +6,24 @@ const postSchema = new mongoose.Schema({
     required: true,
     ref: 'User'
   },
+  username: {
+    type: String,
+    required: true
+  },
+  avatar: {
+    fileUrl: {
+      type: String,
+      required: true
+    },
+    filePath: {
+      type: String,
+      required: true
+    }
+  },
+  email: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true

@@ -83,6 +83,12 @@ usersRouter.post('/sign', async (request, response, next) => {
     })
   }
 
+  const isPasswordInvalid = /^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$/.test(password)
+  if (isPasswordInvalid) {
+    return response.status(401).json({
+      error: 'Password must contain at least 8 characters, one uppercase, one lowercase, one special character and at least one number.'
+    })
+  }
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
