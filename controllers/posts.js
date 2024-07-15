@@ -13,7 +13,7 @@ postsRouter.get('/', async (request, response) => {
 
 //* Get a specific post
 postsRouter.get('/:id', async (request, response) => {
-  const post = await Post.findById(request.params.id)
+  const post = await Post.findById(request.params.id).populate('comments')
   response.json(post)
 })
 
