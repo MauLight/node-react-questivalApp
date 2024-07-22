@@ -13,11 +13,9 @@ const postSchema = new mongoose.Schema({
   avatar: {
     fileUrl: {
       type: String,
-      required: true
     },
     filePath: {
       type: String,
-      required: true
     }
   },
   email: {
@@ -35,11 +33,9 @@ const postSchema = new mongoose.Schema({
   imageUrl: {
     fileUrl: {
       type: String,
-      required: true
     },
     filePath: {
       type: String,
-      required: true
     }
   },
   created_at: {
