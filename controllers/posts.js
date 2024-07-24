@@ -22,9 +22,9 @@ postsRouter.post('/', async (request, response) => {
   const decodedToken = jwt.verify(request.body.token, SECRET)
   if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
 
-  const { title, paragraph, imageUrl, created_at, userId } = request.body
+  const { title, paragraph, imageUrl, created_at, userId, genres } = request.body
 
-  if (title === '' || paragraph === '' || created_at === '' || userId === '') {
+  if (title === '' || paragraph === '' || created_at === '' || userId === '' || genres.length === 0) {
     return response.status(401).json({
       error: 'Please add all fields before submitting.'
     })

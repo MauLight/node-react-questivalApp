@@ -18,10 +18,6 @@ const postSchema = new mongoose.Schema({
       type: String,
     }
   },
-  email: {
-    type: String,
-    required: true
-  },
   title: {
     type: String,
     required: true
@@ -30,6 +26,11 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  genres: [
+    {
+      type: String
+    }
+  ],
   imageUrl: {
     fileUrl: {
       type: String,
@@ -41,13 +42,7 @@ const postSchema = new mongoose.Schema({
   created_at: {
     type: String,
     required: true
-  },
-  comments: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comment'
-    }
-  ]
+  }
 })
 
 const Post = mongoose.model('Post', postSchema)
