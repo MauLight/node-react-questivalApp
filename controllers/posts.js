@@ -41,6 +41,7 @@ postsRouter.post('/', async (request, response) => {
     title,
     paragraph,
     imageUrl,
+    genres,
     created_at,
     userId,
     username: user.username,
