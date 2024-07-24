@@ -7,13 +7,13 @@ const User = require('../models/user')
 
 //* Get all posts
 postsRouter.get('/', async (request, response) => {
-  const posts = await Post.find({}).populate('comments')
+  const posts = await Post.find({})
   response.json(posts)
 })
 
 //* Get a specific post
 postsRouter.get('/:id', async (request, response) => {
-  const post = await Post.findById(request.params.id).populate('comments')
+  const post = await Post.findById(request.params.id)
   response.json(post)
 })
 
