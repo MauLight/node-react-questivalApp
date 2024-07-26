@@ -128,9 +128,9 @@ usersRouter.put('/:id', (request, response, next) => {
   const decodedToken = jwt.verify(request.body.token, SECRET)
   if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
 
-  const { username, email, avatar, location, website } = request.body
+  const { username, introduction, location, website } = request.body.userInformation
 
-  User.findByIdAndUpdate(request.params.id, { username, email, avatar, location, website }, { new: true, runValidators: true, context: 'query' })
+  User.findByIdAndUpdate(request.params.id, { username, introduction, location, website }, { new: true, runValidators: true, context: 'query' })
     .then(updatedUser => { response.json(updatedUser) })
     .catch(error => next(error))
 })

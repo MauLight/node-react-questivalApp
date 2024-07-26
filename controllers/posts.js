@@ -11,9 +11,20 @@ postsRouter.get('/', async (request, response) => {
   response.json(posts)
 })
 
-//* Get a specific post
+//* Get all posts for a specific user
 postsRouter.get('/:id', async (request, response) => {
+  const posts = await Post.find({ userId: request.params.id })
+  response.json(posts)
+})
+
+//* Get a specific post
+postsRouter.get('/post/:id', async (request, response) => {
   const post = await Post.findById(request.params.id)
+  if (!post) {
+    return response.status(404).json({
+      error: 'Post not found.'
+    })
+  }
   response.json(post)
 })
 
@@ -37,6 +48,9 @@ postsRouter.post('/', async (request, response) => {
     })
   }
 
+  console.log(genres)
+  console.log(typeof genres)
+
   const post = new Post({
     title,
     paragraph,
@@ -45,7 +59,6 @@ postsRouter.post('/', async (request, response) => {
     created_at,
     userId,
     username: user.username,
-    email: user.email,
     avatar: user.avatar
   })
 

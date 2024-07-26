@@ -1,15 +1,5 @@
 const mongoose = require('mongoose')
 
-const Website = new mongoose.Schema({
-  url: {
-    type: String,
-    default: ''
-  },
-  title: {
-    type: String,
-    default: ''
-  }
-})
 const Social = new mongoose.Schema({
   instagram: {
     type: String,
@@ -106,8 +96,8 @@ const userSchema = new mongoose.Schema({
     default: ''
   },
   website: {
-    type: Website,
-    default: { url: '', title: '' }
+    type: String,
+    default: ''
   },
   social: {
     type: Social,
@@ -117,7 +107,8 @@ const userSchema = new mongoose.Schema({
   //* Profile information
   introduction: {
     type: String,
-    default: ''
+    default: '',
+    maxLength: 92
   },
   education: {
     type: String,
