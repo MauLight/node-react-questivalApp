@@ -42,12 +42,9 @@ usersRouter.post('/user', async (request, response) => {
   const verifyToken = jwt.verify(request.body.token, SECRET)
   if (!verifyToken) response.status(400).json({ error: 'Bad Credentials.' })
 
-  const { email, id } = jwt.decode(request.body.token, SECRET)
-  console.log(email)
-  console.log(id)
+  const { id } = request.body
 
   const user = await User.findById(id).populate('following').populate('followers')
-  console.log(user)
   if (user) {
     return response.json(user)
   }

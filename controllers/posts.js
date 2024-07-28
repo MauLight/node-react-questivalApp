@@ -12,13 +12,13 @@ postsRouter.get('/', async (request, response) => {
 })
 
 //* Get all posts for a specific user
-postsRouter.get('/:id', async (request, response) => {
+postsRouter.get('/user/:id', async (request, response) => {
   const posts = await Post.find({ userId: request.params.id })
   response.json(posts)
 })
 
 //* Get a specific post
-postsRouter.get('/post/:id', async (request, response) => {
+postsRouter.get('/:id', async (request, response) => {
   const post = await Post.findById(request.params.id)
   if (!post) {
     return response.status(404).json({
