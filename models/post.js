@@ -11,12 +11,7 @@ const postSchema = new mongoose.Schema({
     required: true
   },
   avatar: {
-    fileUrl: {
-      type: String,
-    },
-    filePath: {
-      type: String,
-    }
+    type: String
   },
   title: {
     type: String,

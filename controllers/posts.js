@@ -49,9 +49,6 @@ postsRouter.post('/', async (request, response) => {
     })
   }
 
-  console.log(genres)
-  console.log(typeof genres)
-
   const post = new Post({
     title,
     paragraph,
