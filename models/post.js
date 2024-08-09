@@ -32,12 +32,11 @@ const postSchema = new mongoose.Schema({
     }
   ],
   imageUrl: {
-    fileUrl: {
-      type: String,
-    },
-    filePath: {
-      type: String,
-    }
+    type: String,
+    required: true
+  },
+  pdfUrl: {
+    type: String
   },
   created_at: {
     type: String,

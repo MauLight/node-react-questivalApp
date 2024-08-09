@@ -72,24 +72,12 @@ const userSchema = new mongoose.Schema({
 
   //* Additional Information
   avatar: {
-    fileUrl: {
-      type: String,
-      default: ''
-    },
-    filePath: {
-      type: String,
-      default: ''
-    }
+    type: String,
+    default: ''
   },
   banner: {
-    fileUrl: {
-      type: String,
-      default: ''
-    },
-    filePath: {
-      type: String,
-      default: ''
-    }
+    type: String,
+    default: ''
   },
   location: {
     type: String,

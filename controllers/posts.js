@@ -34,6 +34,7 @@ postsRouter.post('/', async (request, response) => {
   if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
 
   const { title, paragraph, imageUrl, created_at, userId, genres } = request.body
+  const pdfUrl = request.file ? request.file.path : null
 
   if (title === '' || paragraph === '' || created_at === '' || userId === '' || genres.length === 0) {
     return response.status(401).json({
@@ -55,6 +56,7 @@ postsRouter.post('/', async (request, response) => {
     title,
     paragraph,
     imageUrl,
+    pdfUrl,
     genres,
     created_at,
     userId,
@@ -91,6 +93,13 @@ postsRouter.post('/comment', async (request, response) => {
   post.comments = post.comments.concat(savedComment)
   await post.save()
   response.json(savedComment)
+})
+
+postsRouter.post('/drive', async (request, response) => {
+  const { file } = request.body
+  console.log(request.body)
+  console.log(file)
+  response.json({ message: 'File uploaded successfully.' })
 })
 
 module.exports = postsRouter

@@ -27,13 +27,12 @@ usersRouter.post('/userexists', async (request, response) => {
   const { email } = request.body
 
   const userExists = await User.findOne({ email })
-  console.log('this the user', userExists)
   if (!userExists) {
     console.log('ready to sign up!')
     return response.json({ check: false })
   }
   else {
-    return response.json({ check: true })
+    return response.json({ check: true, user: userExists })
   }
 })
 
