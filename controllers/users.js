@@ -283,20 +283,39 @@ usersRouter.put('/', async (request, response) => {
   response.status(200).json(myUser)
 })
 
-//* Unfollow a user
-usersRouter.post('/update', async (request, response) => {
+usersRouter.post('/verify', async (request, response) => {
   const decodedToken = jwt.verify(request.body.token, SECRET)
   if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
 
-  const { userToFollowId, myId } = request.body
+  const { userToCheckId, myId } = request.body
+  let myUser = await User.findById(myId)
+
+  console.log('this is the user to follow id', userToCheckId)
+  const checkFollowing = myUser.following.filter(elem => elem._id.toString() === userToCheckId)
+  console.log('this is the check following', checkFollowing)
+  if (checkFollowing.length > 0) {
+    response.json({ following: true })
+    return
+  } else {
+    response.json({ following: false })
+    return
+  }
+})
+
+//* Unfollow a user
+usersRouter.post('/unfollow', async (request, response) => {
+  const decodedToken = jwt.verify(request.body.token, SECRET)
+  if (!decodedToken) response.status(400).json({ error: 'Bad Credentials.' })
+
+  const { userToUnfollowId, myId } = request.body
 
   let myUser = await User.findById(myId)
 
-  const userToUnfollow = await User.findById(userToFollowId)
+  const userToUnfollow = await User.findById(userToUnfollowId)
   console.log('this is the user to unfollow', userToUnfollow)
 
-  await User.findByIdAndUpdate(userToFollowId, { followers: userToUnfollow.followers.filter(elem => elem._id.toString() !== myId) })
-  await User.findByIdAndUpdate(myId, { following: myUser.following.filter(elem => elem._id.toString() !== userToFollowId) })
+  await User.findByIdAndUpdate(userToUnfollowId, { followers: userToUnfollow.followers.filter(elem => elem._id.toString() !== myId) })
+  await User.findByIdAndUpdate(myId, { following: myUser.following.filter(elem => elem._id.toString() !== userToUnfollowId) })
 
   myUser = await User.findById(myId)
   console.log('this is my updated user', myUser.following)
