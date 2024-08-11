@@ -290,9 +290,8 @@ usersRouter.post('/verify', async (request, response) => {
   const { userToCheckId, myId } = request.body
   let myUser = await User.findById(myId)
 
-  console.log('this is the user to follow id', userToCheckId)
   const checkFollowing = myUser.following.filter(elem => elem._id.toString() === userToCheckId)
-  console.log('this is the check following', checkFollowing)
+
   if (checkFollowing.length > 0) {
     response.json({ following: true })
     return
@@ -312,13 +311,11 @@ usersRouter.post('/unfollow', async (request, response) => {
   let myUser = await User.findById(myId)
 
   const userToUnfollow = await User.findById(userToUnfollowId)
-  console.log('this is the user to unfollow', userToUnfollow)
 
   await User.findByIdAndUpdate(userToUnfollowId, { followers: userToUnfollow.followers.filter(elem => elem._id.toString() !== myId) })
   await User.findByIdAndUpdate(myId, { following: myUser.following.filter(elem => elem._id.toString() !== userToUnfollowId) })
 
   myUser = await User.findById(myId)
-  console.log('this is my updated user', myUser.following)
 
   response.status(200).json(myUser)
 })
