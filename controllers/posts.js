@@ -67,7 +67,8 @@ postsRouter.post('/', async (request, response) => {
 
 //* Delete a post
 postsRouter.delete('/:id', async (request, response) => {
-  await Post.findByIdAndRemove(request.params.id)
+  console.log(request.params.id, 'this is the post id')
+  await Post.findByIdAndDelete(request.params.id)
   response.status(204).end()
 })
 
