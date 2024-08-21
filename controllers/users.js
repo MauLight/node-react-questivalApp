@@ -71,7 +71,7 @@ usersRouter.post('/visitinguser', async (request, response) => {
 
 //* Post a New User
 usersRouter.post('/sign', async (request, response, next) => {
-  const { username, email, password, course } = request.body
+  const { username, firstname, lastname, email, password, course } = request.body
   const savedUser = await User.find({ email })
   if (savedUser.length > 0) {
     return response.status(401).json({
@@ -93,12 +93,16 @@ usersRouter.post('/sign', async (request, response, next) => {
   if (course === '') {
     user = new User({
       username,
+      firstname,
+      lastname,
       email,
       passwordHash
     })
   } else {
     user = new User({
       username,
+      firstname,
+      lastname,
       email,
       passwordHash,
       register: {
@@ -109,7 +113,7 @@ usersRouter.post('/sign', async (request, response, next) => {
     })
   }
 
-  if (username === undefined || email === undefined || password === undefined) {
+  if (username === undefined|| firstname === undefined|| lastname === undefined || email === undefined || password === undefined) {
     return response.status(400).json({ error: 'Fields are missing' })
   }
 
