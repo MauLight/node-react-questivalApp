@@ -36,7 +36,7 @@ app.use('/api/preregister', preregisterRouter)
 app.use('/api/checkout', checkoutRouter)
 app.use('/api/paypal', paypalRouter)
 app.use('/api/posts', postsRouter)
-app.use('/api/surveys', surveyRouter)
+app.use('/api/survey', surveyRouter)
 
 
 app.use(middleware.unknownEndPoint)
