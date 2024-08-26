@@ -11,6 +11,7 @@ const checkoutRouter = require('./controllers/checkout')
 const paypalRouter = require('./controllers/paypal')
 const postsRouter = require('./controllers/posts')
 const surveyRouter = require('./controllers/surveys')
+const replicateRouter = require('./controllers/replicate')
 
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
@@ -37,6 +38,7 @@ app.use('/api/checkout', checkoutRouter)
 app.use('/api/paypal', paypalRouter)
 app.use('/api/posts', postsRouter)
 app.use('/api/survey', surveyRouter)
+app.use('/api/replicate', replicateRouter)
 
 
 app.use(middleware.unknownEndPoint)

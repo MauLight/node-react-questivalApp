@@ -40,6 +40,7 @@
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.7",
     "postmark": "^4.0.2",
+    "replicate": "^0.32.0",
     "stripe": "^14.21.0",
     "uuid": "^9.0.1"
   },

@@ -1,7 +1,7 @@
 const axios = require('axios')
 const paypalRouter = require('express').Router()
 const postmark = require('postmark')
-const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = require('../utils/config')
+const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, POSTMARK_API_KEY } = require('../utils/config')
 const Payer = require('../models/payer')
 const User = require('../models/user')
 
@@ -125,7 +125,7 @@ paypalRouter.post('/check-order', async (request, response) => {
     user.register.registered = true
     await user.save()
     console.log('5. Display user:', user)
-    const client = new postmark.ServerClient('859ff21a-921b-4b00-9487-4ef2561df8fd')
+    const client = new postmark.ServerClient(POSTMARK_API_KEY)
     const email = {
       'From': 'contact@ctlst.pro',
       'To': 'contact@ctlst.pro', // change to user.email
