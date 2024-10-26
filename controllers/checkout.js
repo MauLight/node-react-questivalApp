@@ -13,7 +13,7 @@ checkoutRouter.post('/', async (request, response) => {
       payment_method_types: ['card'],
       mode: 'payment',
 
-      line_items: request.body.items.map( item => {
+      line_items: request.body.items.map(item => {
         const storeItem = storeItems.get(item.id)
         return {
           price_data: {
